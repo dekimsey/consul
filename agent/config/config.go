@@ -134,6 +134,7 @@ type Config struct {
 	// DEPRECATED (ACL-Legacy-Compat) - moved into the "acl.tokens" stanza
 	ACLTTL *string `json:"acl_ttl,omitempty" hcl:"acl_ttl" mapstructure:"acl_ttl"`
 	// DEPRECATED (ACL-Legacy-Compat) - moved into the "acl.tokens" stanza
+
 	ACLToken                         *string             `json:"acl_token,omitempty" hcl:"acl_token" mapstructure:"acl_token"`
 	ACL                              ACL                 `json:"acl,omitempty" hcl:"acl" mapstructure:"acl"`
 	Addresses                        Addresses           `json:"addresses,omitempty" hcl:"addresses" mapstructure:"addresses"`
@@ -232,6 +233,7 @@ type Config struct {
 	Service                          *ServiceDefinition  `json:"service,omitempty" hcl:"service" mapstructure:"service"`
 	Services                         []ServiceDefinition `json:"services,omitempty" hcl:"services" mapstructure:"services"`
 	SessionTTLMin                    *string             `json:"session_ttl_min,omitempty" hcl:"session_ttl_min" mapstructure:"session_ttl_min"`
+	ShortNodeName                    *bool               `json:"short_node,omitempty" hcl:"short_node" mapstructure:"short_node"`
 	SkipLeaveOnInt                   *bool               `json:"skip_leave_on_interrupt,omitempty" hcl:"skip_leave_on_interrupt" mapstructure:"skip_leave_on_interrupt"`
 	StartJoinAddrsLAN                []string            `json:"start_join,omitempty" hcl:"start_join" mapstructure:"start_join"`
 	StartJoinAddrsWAN                []string            `json:"start_join_wan,omitempty" hcl:"start_join_wan" mapstructure:"start_join_wan"`

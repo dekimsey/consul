@@ -2001,6 +2001,73 @@ func TestBuilder_BuildAndValidate_ConfigFlagsAndEdgecases(t *testing.T) {
 			err:      "node_name cannot be empty",
 		},
 		{
+			desc: "node_name fqdn warns",
+			args: []string{
+				`-data-dir=` + dataDir,
+				`-node=foo.example.com`,
+			},
+			hostname: func() (string, error) { return "", nil },
+			warns: []string{fmt.Sprintf("Node name %q will not be discoverable "+
+				"via DNS due to invalid characters. Valid characters include "+
+				"all alpha-numerics and dashes.", "foo.example.com")},
+			patch: func(rt *RuntimeConfig) {
+				rt.DataDir = dataDir
+				rt.NodeName = "foo.example.com"
+			},
+		},
+		{
+			desc: "node_name is too long warns",
+			args: []string{
+				`-data-dir=` + dataDir,
+				`-node=this-node-name-is-longer-than-63-bytes-but-is-still-a-possible-input-hostname`,
+			},
+			hostname: func() (string, error) { return "", nil },
+			warns: []string{fmt.Sprintf("Node name %q will not be discoverable "+
+				"via DNS due to it being too long. Valid lengths are between "+
+				"1 and 63 bytes.", `this-node-name-is-longer-than-63-bytes-but-is-still-a-possible-input-hostname`)},
+			patch: func(rt *RuntimeConfig) {
+				rt.DataDir = dataDir
+				rt.NodeName = "this-node-name-is-longer-than-63-bytes-but-is-still-a-possible-input-hostname"
+			},
+		},
+		{
+			desc: "node_name with short is ok",
+			args: []string{
+				`-data-dir=` + dataDir,
+				`-node=shorty.example.com`,
+				`-short-node`,
+			},
+			hostname: func() (string, error) { return "shorty.example.com", nil },
+			patch: func(rt *RuntimeConfig) {
+				rt.DataDir = dataDir
+				rt.NodeName = "shorty"
+			},
+		},
+		{
+			desc: "node_name autodetection with short is ok",
+			args: []string{
+				`-data-dir=` + dataDir,
+				`-short-node`,
+			},
+			hostname: func() (string, error) { return "shorty.example.com", nil },
+			patch: func(rt *RuntimeConfig) {
+				rt.DataDir = dataDir
+				rt.NodeName = "shorty"
+			},
+		},
+		{
+			desc: "node_name shortening noop is ok",
+			args: []string{
+				`-data-dir=` + dataDir,
+				`-short-node`,
+			},
+			hostname: func() (string, error) { return "shorty", nil },
+			patch: func(rt *RuntimeConfig) {
+				rt.DataDir = dataDir
+				rt.NodeName = "shorty"
+			},
+		},
+		{
 			desc: "node_meta key too long",
 			args: []string{
 				`-data-dir=` + dataDir,

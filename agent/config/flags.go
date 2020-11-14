@@ -105,6 +105,7 @@ func AddFlags(fs *flag.FlagSet, f *BuilderOpts) {
 	add(&f.Config.SerfAllowedCIDRsLAN, "serf-lan-allowed-cidrs", "Networks (eg: 192.168.1.0/24) allowed for Serf LAN. Can be specified multiple times.")
 	add(&f.Config.SerfAllowedCIDRsWAN, "serf-wan-allowed-cidrs", "Networks (eg: 192.168.1.0/24) allowed for Serf WAN (other datacenters). Can be specified multiple times.")
 	add(&f.Config.SerfBindAddrLAN, "serf-lan-bind", "Address to bind Serf LAN listeners to.")
+	add(&f.Config.ShortNodeName, "short-node", "Use a short node-name.")
 	add(&f.Config.Ports.SerfLAN, "serf-lan-port", "Sets the Serf LAN port to listen on.")
 	add(&f.Config.SegmentName, "segment", "(Enterprise-only) Sets the network segment to join.")
 	add(&f.Config.SerfBindAddrWAN, "serf-wan-bind", "Address to bind Serf WAN listeners to.")

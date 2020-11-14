@@ -1030,7 +1030,7 @@ func (b *Builder) Build() (rt RuntimeConfig, err error) {
 		MaxQueryTime:                b.durationVal("max_query_time", c.MaxQueryTime),
 		NodeID:                      types.NodeID(b.stringVal(c.NodeID)),
 		NodeMeta:                    c.NodeMeta,
-		NodeName:                    b.nodeName(c.NodeName),
+		NodeName:                    b.nodeName(c.NodeName, b.boolVal(c.ShortNodeName)),
 		NonVotingServer:             b.boolVal(c.NonVotingServer),
 		PidFile:                     b.stringVal(c.PidFile),
 		PrimaryDatacenter:           primaryDatacenter,
@@ -1894,7 +1894,7 @@ func (b *Builder) tlsCipherSuites(name string, v *string) []uint16 {
 	return a
 }
 
-func (b *Builder) nodeName(v *string) string {
+func (b *Builder) nodeName(v *string, short bool) string {
 	nodeName := b.stringVal(v)
 	if nodeName == "" {
 		fn := b.hostname
@@ -1907,6 +1907,9 @@ func (b *Builder) nodeName(v *string) string {
 			return ""
 		}
 		nodeName = name
+	}
+	if short {
+		nodeName = strings.Split(nodeName, ".")[0]
 	}
 	return strings.TrimSpace(nodeName)
 }
